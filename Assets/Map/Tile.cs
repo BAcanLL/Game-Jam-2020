@@ -9,7 +9,7 @@ enum Orientation
 }
 
 
-public class Block
+public class Block: MonoBehaviour
 {
     Tile NE_viewable_tile;
     Tile SE_viewable_tile;
