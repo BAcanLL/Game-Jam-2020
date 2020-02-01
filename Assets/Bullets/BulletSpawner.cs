@@ -70,6 +70,6 @@ public class BulletSpawner : MonoBehaviour
         b.speed = bulletSpeed;
         b.damage = bulletDamage;
         b.range = range;
-        b.setDirection(rotation);
+        b.SetDirection(rotation);
     }
 }
