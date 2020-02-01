@@ -540,6 +540,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1069457044 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8927434290999518837, guid: 615e3b00dc130984a851b50ce0a9a831,
+    type: 3}
+  m_PrefabInstance: {fileID: 8927434290771556577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1069457051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069457044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcacf157340011949a0eb3e34387ce19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryItems: []
 --- !u!1 &1677755426
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +572,7 @@ GameObject:
   - component: {fileID: 1677755427}
   - component: {fileID: 1677755431}
   - component: {fileID: 1677755430}
+  - component: {fileID: 1677755432}
   m_Layer: 0
   m_Name: sample_tile
   m_TagString: Untagged
@@ -688,6 +708,22 @@ PolygonCollider2D:
       - {x: -0.0018377304, y: -0.49192595}
       - {x: 0.0044355392, y: -0.49192595}
       - {x: 0.51846325, y: -0.25089514}
+--- !u!114 &1677755432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677755426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f6c6887db791e4cab036bbd6d4b016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceItemPrefab: {fileID: 5279738609698962693, guid: 5d766057f06f7d44782aebc42cec2c1e,
+    type: 3}
+  state: 0
+  quantity: 5
 --- !u!1001 &8927434290771556577
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -9,12 +9,16 @@ public class KeyMaps
                                     KeyCode.S, 
                                     KeyCode.A, 
                                     KeyCode.D,
-                                    KeyCode.E);
+                                    KeyCode.E,
+                                    KeyCode.R
+        );
     static public KeyMap arrows = new KeyMap(KeyCode.UpArrow, 
                                       KeyCode.DownArrow, 
                                       KeyCode.LeftArrow, 
                                       KeyCode.RightArrow,
-                                      KeyCode.RightShift);
+                                      KeyCode.RightShift,
+                                      KeyCode.Return
+        );
 }
 
 
@@ -25,14 +29,16 @@ public struct KeyMap
     public KeyCode left;
     public KeyCode right;
     public KeyCode interact;
+    public KeyCode shoot;
 
-    public KeyMap(KeyCode up, KeyCode down, KeyCode left, KeyCode right, KeyCode interact)
+    public KeyMap(KeyCode up, KeyCode down, KeyCode left, KeyCode right, KeyCode interact, KeyCode shoot)
     {
         this.up = up;
         this.down = down;
         this.left = left;
         this.right = right;
         this.interact = interact;
+        this.shoot = shoot;
     }
 }
 
@@ -52,6 +58,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     public Player player = Player.PLAYER_1;
     Rigidbody2D rbody;
+    BulletSpawner bulletSpawner;
 
     KeyMap current_keymap;
 
@@ -60,6 +67,7 @@ public class PlayerController : MonoBehaviour
     {
         rbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        bulletSpawner = GetComponent<BulletSpawner>();
 
         // TODO Have external task assign keymap?
 
@@ -92,9 +100,14 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         }
 
-        if (Input.GetKey(current_keymap.interact))
+        if (Input.GetKeyDown(current_keymap.interact))
         {
             interactWithObjects();
+        }
+
+        if (bulletSpawner)
+        {
+            bulletSpawner.SetFiring(Input.GetKey(current_keymap.shoot));
         }
         
     }
@@ -139,7 +152,7 @@ public class PlayerController : MonoBehaviour
     {
         if(currentInteractables.Count > 0)
         {
-            currentInteractables[0].interact();
+            currentInteractables[0].interact(gameObject);
         }
     }
 }
