@@ -8,11 +8,13 @@ public class KeyMaps
     static public KeyMap wasd = new KeyMap(KeyCode.W, 
                                     KeyCode.S, 
                                     KeyCode.A, 
-                                    KeyCode.D);
+                                    KeyCode.D,
+                                    KeyCode.E);
     static public KeyMap arrows = new KeyMap(KeyCode.UpArrow, 
                                       KeyCode.DownArrow, 
                                       KeyCode.LeftArrow, 
-                                      KeyCode.RightArrow);
+                                      KeyCode.RightArrow,
+                                      KeyCode.RightShift);
 }
 
 
@@ -22,13 +24,15 @@ public struct KeyMap
     public KeyCode down;
     public KeyCode left;
     public KeyCode right;
+    public KeyCode interact;
 
-    public KeyMap(KeyCode up, KeyCode down, KeyCode left, KeyCode right)
+    public KeyMap(KeyCode up, KeyCode down, KeyCode left, KeyCode right, KeyCode interact)
     {
         this.up = up;
         this.down = down;
         this.left = left;
         this.right = right;
+        this.interact = interact;
     }
 }
 
@@ -37,12 +41,13 @@ public class PlayerController : MonoBehaviour
 {
     // TEMP Until external manager assigns keymaps?
     public enum Player {
-    PLAYER_1,
-    PLAYER_2
+        PLAYER_1,
+        PLAYER_2
     };
 
     private Animator anim;
-    private bool faceRight;
+
+    private List<IInteractable> currentInteractables = new List<IInteractable>();
 
     public float speed = 5f;
     public Player player = Player.PLAYER_1;
@@ -65,6 +70,32 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (rbody.velocity.y > 0)
+        {
+            anim.Play("Walking_back");
+        }
+        else if (rbody.velocity.y < 0 || rbody.velocity.x != 0)
+        {
+            anim.Play("Walking_front");
+        }
+        else
+        {
+            anim.Play("Idle");
+        }
+
+        if (rbody.velocity.x > 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else if (rbody.velocity.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+
+        if (Input.GetKey(current_keymap.interact))
+        {
+            interactWithObjects();
+        }
         
     }
 
@@ -82,34 +113,33 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(current_keymap.up)) input_vector += Vector2.up;
         if (Input.GetKey(current_keymap.down)) input_vector += Vector2.down;
 
-        if (input_vector.y < 0 || input_vector.x != 0) 
-        {
-            anim.Play("Walking_front");
-        } else if (input_vector.y > 0) 
-        {
-            anim.Play("Walking_back");
-        } else
-        {
-            anim.Play("Idle");
-        }
-
-        if (input_vector.x > 0)
-        {
-            GetComponent<SpriteRenderer>().flipX = true;
-        } else if (input_vector.x < 0)
-        {
-            GetComponent<SpriteRenderer>().flipX = false;
-        }
-
-
         // Debug.Log(KeyCode.DownArrow.GetType());
 
         // Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
         input_vector = Vector2.ClampMagnitude(input_vector, 1);
 
         Vector2 movement = input_vector * speed;
-        Vector2 newPos = currentPos + movement * Time.fixedDeltaTime;
+        // Vector2 newPos = currentPos + movement * Time.fixedDeltaTime;
         // renderer.SetDirection(movement);
-        rbody.MovePosition(newPos);
+
+        rbody.velocity = movement;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        currentInteractables.Add(collision.gameObject.GetComponent<IInteractable>());
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        currentInteractables.Remove(collision.gameObject.GetComponent<IInteractable>());
+    }
+
+    private void interactWithObjects()
+    {
+        if(currentInteractables.Count > 0)
+        {
+            currentInteractables[0].interact();
+        }
     }
 }
