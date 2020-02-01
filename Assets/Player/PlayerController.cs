@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         }
 
-        if (Input.GetKey(current_keymap.interact))
+        if (Input.GetKeyDown(current_keymap.interact))
         {
             interactWithObjects();
         }
@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
     {
         if(currentInteractables.Count > 0)
         {
-            currentInteractables[0].interact();
+            currentInteractables[0].interact(gameObject);
         }
     }
 }
