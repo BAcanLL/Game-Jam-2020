@@ -18,6 +18,11 @@ public class Block: MonoBehaviour
     List<ViewController> views;
     List<Vector3Int> block_viewables;
 
+    void initialize(Vector3 pos, BlockType type)
+    {
+        
+    }
+
 
     void start(){
         foreach (ViewController v in views){
