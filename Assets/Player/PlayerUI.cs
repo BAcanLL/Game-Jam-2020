@@ -29,9 +29,7 @@ public class PlayerUI : MonoBehaviour
             InventoryManager inv = player.GetComponent<InventoryManager>();
             if (inv)
             {
-                GameObject o = new GameObject("Inventory UI");
-                o.transform.parent = transform;
-                UI ui = new InventoryManager.InventoryUI(o, inv);
+                UI ui = new InventoryManager.InventoryUI(gameObject, inv);
                 UIs.Add(ui);
             }
         }

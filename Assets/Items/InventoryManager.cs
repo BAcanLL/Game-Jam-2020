@@ -14,22 +14,36 @@ public class InventoryManager : MonoBehaviour
     public class InventoryUI : UI
     {
         List<Image> inventoryIcons;
+        List<Text> itemCounts;
         InventoryManager inventoryMgr;
+        Inventory inventory;
         public InventoryUI(GameObject anchor, InventoryManager inventoryMgr)
         {
             this.inventoryMgr = inventoryMgr;
             inventoryIcons = new List<Image>();
-            Inventory inventory = inventoryMgr.inventory;
+            itemCounts = new List<Text>();
+            inventory = inventoryMgr.inventory;
 
-            float spacing = 500;
+            GameObject o = new GameObject("Inventory UI", typeof(RectTransform));
+            o.transform.SetParent(anchor.transform);
+            o.transform.Translate(new Vector2(64, 96));
+
+            float spacing = 128;
             for (int i = 0; i < inventory.GetSize(); i++)
             {
-                Image image = new GameObject().AddComponent<Image>();
-                image.rectTransform.SetParent(anchor.transform);
+                Image image = new GameObject(inventory.GetItem(i).itemID).AddComponent<Image>();
+                image.rectTransform.SetParent(o.transform);
                 image.transform.localPosition = new Vector3(i * spacing, 5.0f, 0.0f);
                 image.sprite = inventory.GetItem(i).GetComponent<SpriteRenderer>().sprite;
-            }
+                inventoryIcons.Add(image);
 
+                Text count = new GameObject(inventory.GetItem(i).itemID + " count").AddComponent<Text>();
+                count.rectTransform.SetParent(image.transform);
+                count.rectTransform.localPosition = Vector3.zero;
+                count.text = inventory.GetItemCount(i).ToString();
+                count.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                itemCounts.Add(count);
+            }
         }
 
         public override void UpdateUI(float deltaTime)
@@ -44,6 +58,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     inventoryIcons[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
                 }
+                itemCounts[i].text = inventory.GetItemCount(i).ToString();
             }
         }
     }
