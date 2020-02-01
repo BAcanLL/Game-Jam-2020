@@ -34,9 +34,6 @@ public class BulletSpawner : MonoBehaviour
         if (isFiring && cooldownExpireTime >= cooldown)
         {
             cooldownExpireTime -= cooldown;
-
-            Rotate(new Vector3(0, 0, 30));
-
             FireBullet();
         }
     }
