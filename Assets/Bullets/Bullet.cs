@@ -38,13 +38,13 @@ public class Bullet : MonoBehaviour
     {
     }
 
-    public void setDirection(Vector3 rotation)
+    public void SetDirection(Vector3 rotation)
     {
-        direction = Utilities.convertRotationToDirection(rotation);
+        direction = Utilities.ConvertRotationToDirection(rotation);
     }
 
-    public void setDirection(Quaternion rotation)
+    public void SetDirection(Quaternion rotation)
     {
-        direction = Utilities.convertRotationToDirection(rotation);
+        direction = Utilities.ConvertRotationToDirection(rotation);
     }
 }
