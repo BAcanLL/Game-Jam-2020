@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour
     PLAYER_2
     };
 
+    private Animator anim;
+    private bool faceRight;
+
     public float speed = 5f;
     public Player player = Player.PLAYER_1;
     Rigidbody2D rbody;
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         // TODO Have external task assign keymap?
 
@@ -77,6 +81,26 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(current_keymap.right)) input_vector += Vector2.right;
         if (Input.GetKey(current_keymap.up)) input_vector += Vector2.up;
         if (Input.GetKey(current_keymap.down)) input_vector += Vector2.down;
+
+        if (input_vector.y < 0 || input_vector.x != 0) 
+        {
+            anim.Play("Walking_front");
+        } else if (input_vector.y > 0) 
+        {
+            anim.Play("Walking_back");
+        } else
+        {
+            anim.Play("Idle");
+        }
+
+        if (input_vector.x > 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        } else if (input_vector.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+
 
         // Debug.Log(KeyCode.DownArrow.GetType());
 
