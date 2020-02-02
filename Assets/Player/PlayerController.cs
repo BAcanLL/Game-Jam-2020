@@ -80,8 +80,11 @@ public struct InputMap
     }
 }
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+    public ViewManager view_manager;
+
     // TEMP Until external manager assigns keymaps?
     public enum Player {
         PLAYER_1,
@@ -182,6 +185,20 @@ public class PlayerController : MonoBehaviour
         // Vector2 newPos = currentPos + movement * Time.fixedDeltaTime;
         // renderer.SetDirection(movement);
 
+
+        if(view_manager)
+        {
+            foreach(ViewController view in view_manager.getViews())
+            {
+                GameObject player_viewable = null;
+                if(player == Player.PLAYER_1) player_viewable = view.player1_viewable;
+                if(player == Player.PLAYER_2) player_viewable = view.player2_viewable;
+                
+                player_viewable.transform.position = view.tilemap.CellToLocalInterpolated(rbody.position);
+            }
+        }
+        else Debug.Log("Must set view_controller for player");
+        
         rbody.velocity = movement;
     }
 

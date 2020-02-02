@@ -14,8 +14,8 @@ public class ViewController : MonoBehaviour {
     // public Grid
 
     public Tilemap tilemap;
-    public Animation player1Anim;
-    public Animation player2Anim;
+    public GameObject player1_viewable;
+    public GameObject player2_viewable;
 
     public Vector3Int createBlockViewable(BlockType b, Vector3 pos){ //block type, position
 
