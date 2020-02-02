@@ -27,13 +27,13 @@ public class BulletSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (cooldown > 0)
+        if (cooldown > 0 && cooldownExpireTime < cooldown)
         {
             cooldownExpireTime += Time.deltaTime;
         }
         if (isFiring && cooldownExpireTime >= cooldown)
         {
-            cooldownExpireTime -= cooldown;
+            cooldownExpireTime = 0;
             FireBullet();
         }
     }

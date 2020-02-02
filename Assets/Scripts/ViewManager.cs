@@ -5,6 +5,13 @@ using UnityEngine;
 public class ViewManager : MonoBehaviour
 {
     public GameObject initialization_view;
+
+    List<ViewController> views;
+
+    public List<ViewController> getViews()
+    {
+        return views;
+    }
     
     // Start is called before the first frame update
     void Start()
