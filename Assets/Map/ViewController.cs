@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
 
 
 public class ViewController : MonoBehaviour {
@@ -61,32 +62,35 @@ public class ViewController : MonoBehaviour {
     public void updatePlayer1(Vector3 world_position, Vector3 velocity)
     {
 
-        player1_viewable.transform.position = tilemap.CellToLocalInterpolated(
-            orientPos(orientation, world_position)
-        );
-        player1_viewable.transform.position += transform.position;
+        player1_viewable.transform.position = 
+            transform.TransformPoint( tilemap.CellToLocalInterpolated(orientPos(orientation, world_position)) );
+        // player1_viewable.transform.position += transform.position;
 
+
+        // print(orientation.ToString() + ' ' + world_position.ToString() + ' ' + player1_viewable.transform.position.ToString());
+
+        const float EPSILON = 0.0001f;
 
         Animator anim = player1_viewable.GetComponent<Animator>();
 
         if (orientation == Orientation.NE)
         {
-            if (velocity.y > 0) anim.Play("Walking_back");
-            else if (velocity.y < 0 || velocity.x != 0) anim.Play("Walking_front");
+            if (velocity.y > EPSILON) anim.Play("Walking_back");
+            else if (velocity.y < -EPSILON || Math.Abs(velocity.x) > EPSILON) anim.Play("Walking_front");
             else anim.Play("Idle");
         }
         else if (orientation == Orientation.SW)
         {
-            if (velocity.y > 0) anim.Play("Walking_front");
-            else if (velocity.y < 0 || velocity.x != 0) anim.Play("Walking_back");
+            if (velocity.y > EPSILON) anim.Play("Walking_front");
+            else if (velocity.y < -EPSILON || Math.Abs(velocity.x) > EPSILON) anim.Play("Walking_back");
             else anim.Play("Idle");
         }
 
-        if (velocity.x > 0)
+        if (velocity.x > EPSILON)
         {
             player1_viewable.GetComponent<SpriteRenderer>().flipX = true;
         }
-        else if (velocity.x < 0)
+        else if (velocity.x < EPSILON)
         {
             player1_viewable.GetComponent<SpriteRenderer>().flipX = false;
         }
