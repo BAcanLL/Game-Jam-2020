@@ -10,14 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8418914537746230992}
   - component: {fileID: 8418914537746230999}
-  - component: {fileID: 8418914537746230993}
   - component: {fileID: 1177501657720692320}
   - component: {fileID: 8008064664144348194}
   - component: {fileID: -2930426144433471751}
   - component: {fileID: 5598585636929165192}
   - component: {fileID: 1553258170}
-  - component: {fileID: 2972543115512813313}
-  - component: {fileID: 6688041875999534451}
   m_Layer: 0
   m_Name: Harvester
   m_TagString: Untagged
@@ -89,19 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &8418914537746230993
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8418914537746230998}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.8, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1177501657720692320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873157e3eefc11f48912204ec103d09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeInSeconds: 10
+  lifeInSeconds: 20
   state: 1
 --- !u!95 &-2930426144433471751
 Animator:
@@ -175,33 +159,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcacf157340011949a0eb3e34387ce19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryItems:
-  - {fileID: 0}
---- !u!114 &2972543115512813313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8418914537746230998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11868088c8488748bb2dfad3849f4ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!54 &6688041875999534451
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8418914537746230998}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0

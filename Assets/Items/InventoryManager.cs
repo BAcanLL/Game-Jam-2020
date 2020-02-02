@@ -85,21 +85,22 @@ public class InventoryManager : MonoBehaviour
         return inventory.GetItemCount(activeIndex);
     }
 
-    public void RemoveItems(int n = 1)
+    public Item RemoveItems(int n = 1)
     {
         if (inventory.GetItemCount(activeIndex) > 0)
         {
-            inventory.RemoveItems(activeIndex, n);
+            return inventory.RemoveItems(activeIndex, n);
         }
         else 
         {
             // Indicate some sort of failure
+            return null;
         }
     }
 
-    public void RemoveAllItems()
+    public Item RemoveAllItems()
     {
-        RemoveItems(inventory.GetItemCount(activeIndex));
+        return RemoveItems(inventory.GetItemCount(activeIndex));
     }
 
     public void AddItems(Item item, int n = 1)

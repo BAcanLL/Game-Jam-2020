@@ -84,7 +84,7 @@ public struct InputMap
     }
 }
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     public ViewManager view_manager;
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 5f;
     public Player player = Player.PLAYER_1;
-    Rigidbody rbody;
+    Rigidbody2D rbody;
     BulletSpawner bulletSpawner;
     InventoryManager inventoryMgr;
 
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rbody = GetComponent<Rigidbody>();
+        rbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         bulletSpawner = GetComponent<BulletSpawner>();
         inventoryMgr = GetComponent<InventoryManager>();
@@ -214,26 +214,17 @@ public class PlayerController : MonoBehaviour
                 player_viewable.transform.position = view.tilemap.CellToLocalInterpolated(rbody.position);
             }
         }
-        else Debug.Log("Must set view_controller for player");
+        // else Debug.Log("Must set view_controller for player");
         
         rbody.velocity = movement;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        currentInteractables.Add(collision.gameObject.GetComponent<IInteractable>());
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        currentInteractables.Remove(collision.gameObject.GetComponent<IInteractable>());
-    }
-
     private void interactWithObjects()
     {
-        if(currentInteractables.Count > 0)
+        if(GetComponent<InteractiveCollider>() && GetComponent<InteractiveCollider>().currentInteractables.Count > 0)
         {
-            currentInteractables[0].interact(gameObject);
+            GetComponent<InteractiveCollider>().interactNext();
+            Debug.Log(GetComponent<InventoryManager>().GetItemCount());
         }
     }
 }

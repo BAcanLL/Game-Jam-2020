@@ -40,7 +40,7 @@ public class Repairable : MonoBehaviour, IInteractable
     {
         if (state == State.BROKEN)
         {
-            Debug.Log("Repaired");
+            // Debug.Log("Repaired");
 
             state = State.WORKING;
             healthbar.fullHeal();
