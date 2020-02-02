@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43db45cf7dc7841288bc5e5df41931a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialization_view: {fileID: 8304285507077495037, guid: f8caef9125be84b369c89916a29684ce,
+  initialization_view: {fileID: 1228604012455487528, guid: f8caef9125be84b369c89916a29684ce,
     type: 3}
   player1_viewable: {fileID: 6579082258591206386, guid: 9f76a1fa02f844a6db2dc202920db187,
     type: 3}
