@@ -2,46 +2,83 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class KeyMaps
+public enum Inputs
 {
-    static public KeyMap wasd = new KeyMap(KeyCode.W, 
-                                    KeyCode.S, 
-                                    KeyCode.A, 
-                                    KeyCode.D,
-                                    KeyCode.E,
-                                    KeyCode.R
-        );
-    static public KeyMap arrows = new KeyMap(KeyCode.UpArrow, 
-                                      KeyCode.DownArrow, 
-                                      KeyCode.LeftArrow, 
-                                      KeyCode.RightArrow,
-                                      KeyCode.RightShift,
-                                      KeyCode.Return
-        );
-}
+    AXIS_X, AXIS_Y, AXIS_CAM_X, AXIS_CAM_Y,
+    BUTTON_INTERACT, BUTTON_FIRE
+};
 
-
-public struct KeyMap
+public struct InputMap
 {
-    public KeyCode up;
-    public KeyCode down;
-    public KeyCode left;
-    public KeyCode right;
-    public KeyCode interact;
-    public KeyCode shoot;
 
-    public KeyMap(KeyCode up, KeyCode down, KeyCode left, KeyCode right, KeyCode interact, KeyCode shoot)
+
+    Dictionary<Inputs, string> inputMap;
+    HashSet<string> strings;
+    [SerializeField]
+    Dictionary<string, bool> currState;
+    Dictionary<string, bool> lastState;
+
+    public InputMap(int player)
     {
-        this.up = up;
-        this.down = down;
-        this.left = left;
-        this.right = right;
-        this.interact = interact;
-        this.shoot = shoot;
+        string suffix = "_P" + player.ToString();
+
+        strings = new HashSet<string>();
+        inputMap = new Dictionary<Inputs, string>();
+        currState = new Dictionary<string, bool>();
+        lastState = new Dictionary<string, bool>();
+
+        inputMap.Add(Inputs.AXIS_X, "Horizontal" + suffix);
+        inputMap.Add(Inputs.AXIS_Y, "Vertical" + suffix);
+        inputMap.Add(Inputs.AXIS_CAM_X, "CameraX" + suffix);
+        inputMap.Add(Inputs.AXIS_CAM_Y, "CameraY" + suffix);
+
+        inputMap.Add(Inputs.BUTTON_INTERACT, "Interact" + suffix);
+        inputMap.Add(Inputs.BUTTON_FIRE, "Fire" + suffix);
+
+
+        foreach (KeyValuePair<Inputs, string> kv in inputMap)
+        {
+            strings.Add(kv.Value);
+        }
+
+        foreach (string s in strings)
+        {
+            currState[s] = false;
+            lastState[s] = false;
+        }
+    }
+
+    public void UpdateInputStates()
+    {
+        foreach (string s in strings)
+        {
+            lastState[s] = currState[s];
+            currState[s] = Input.GetButton(s);
+        }
+    }
+
+    public bool GetKeyDown(Inputs i)
+    {
+        string s = inputMap[i];
+        return currState[s] && !lastState[s];
+    }
+
+    public bool GetKey(Inputs i)
+    {
+        return currState[inputMap[i]];
+    }
+
+    public bool GetKeyUp(Inputs i)
+    {
+        string s = inputMap[i];
+        return !currState[s] && lastState[s];
+    }
+
+    public float GetAxis(Inputs i)
+    {
+        return Input.GetAxis(inputMap[i]);
     }
 }
-
 
 public class PlayerController : MonoBehaviour
 {
@@ -60,7 +97,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rbody;
     BulletSpawner bulletSpawner;
 
-    KeyMap current_keymap;
+    InputMap inputMap;
 
     // Start is called before the first frame update
     void Start()
@@ -71,13 +108,15 @@ public class PlayerController : MonoBehaviour
 
         // TODO Have external task assign keymap?
 
-        if(player == Player.PLAYER_1) current_keymap = KeyMaps.wasd;
-        else if(player == Player.PLAYER_2) current_keymap = KeyMaps.arrows;
+        if(player == Player.PLAYER_1) inputMap = new InputMap(1);
+        else if(player == Player.PLAYER_2) inputMap = new InputMap(2);
     }
 
     // Update is called once per frame
     void Update()
     {
+        inputMap.UpdateInputStates();
+
         if (rbody.velocity.y > 0)
         {
             anim.Play("Walking_back");
@@ -100,14 +139,21 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         }
 
-        if (Input.GetKeyDown(current_keymap.interact))
+        if (inputMap.GetKeyDown(Inputs.BUTTON_INTERACT))
         {
             interactWithObjects();
         }
 
         if (bulletSpawner)
         {
-            bulletSpawner.SetFiring(Input.GetKey(current_keymap.shoot));
+            Vector2 firingDirection = new Vector2(inputMap.GetAxis(Inputs.AXIS_CAM_X), inputMap.GetAxis(Inputs.AXIS_CAM_Y));
+            // Set a new angle if non zero aim input
+            if (firingDirection != Vector2.zero)
+            {
+                float angle = Vector2.SignedAngle(Vector2.down, firingDirection);
+                bulletSpawner.SetRotation(new Vector3(0, 0, angle));
+            }
+            bulletSpawner.SetFiring(inputMap.GetKey(Inputs.BUTTON_FIRE));
         }
         
     }
@@ -119,12 +165,13 @@ public class PlayerController : MonoBehaviour
         // float horizontalInput = Input.GetAxisRaw("Horizontal");
         // float verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector2 input_vector = new Vector2(0,0);
+        Vector2 input_vector = new Vector2(inputMap.GetAxis(Inputs.AXIS_X), inputMap.GetAxis(Inputs.AXIS_Y));
 
-        if (Input.GetKey(current_keymap.left)) input_vector += Vector2.left;
-        if (Input.GetKey(current_keymap.right)) input_vector += Vector2.right;
-        if (Input.GetKey(current_keymap.up)) input_vector += Vector2.up;
-        if (Input.GetKey(current_keymap.down)) input_vector += Vector2.down;
+
+        //if (Input.GetKey(current_keymap.left)) input_vector += Vector2.left;
+        //if (Input.GetKey(current_keymap.right)) input_vector += Vector2.right;
+        //if (Input.GetKey(current_keymap.up)) input_vector += Vector2.up;
+        //if (Input.GetKey(current_keymap.down)) input_vector += Vector2.down;
 
         // Debug.Log(KeyCode.DownArrow.GetType());
 

@@ -41,10 +41,12 @@ public class Bullet : MonoBehaviour
     public void SetDirection(Vector3 rotation)
     {
         direction = Utilities.ConvertRotationToDirection(rotation);
+        transform.rotation = Quaternion.Euler(rotation);
     }
 
     public void SetDirection(Quaternion rotation)
     {
         direction = Utilities.ConvertRotationToDirection(rotation);
+        transform.rotation = rotation;
     }
 }
