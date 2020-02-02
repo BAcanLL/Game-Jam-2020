@@ -24,7 +24,7 @@ public class ViewManager : MonoBehaviour
         {
             // clone initialization view
             GameObject new_view = Instantiate(initialization_view);
-            new_view.transform.position += new Vector3(0, (int) o * 10, 0); // Place each view in unique location in world
+            new_view.transform.position += new Vector3(0, (int) o * 200, 0); // Place each view in unique location in world
 
             // set up view controller
             view_controllers.Add(new_view.GetComponent<ViewController>());
@@ -44,14 +44,14 @@ public class ViewManager : MonoBehaviour
             view_controllers[view_controllers.Count - 1].player2_viewable = player2_viewable_object;
 
             // attach cameras
-            if (o == Orientation.NE)
-                GameObject.Find("Camera1").transform.parent = player1_viewable_object.transform;
-            else if (o == Orientation.SW)
-                GameObject.Find("Camera2").transform.parent = player2_viewable_object.transform;
-            else
-            {
-                print("Not supported view");
-            }
+            // if (o == Orientation.NE)
+            //     GameObject.Find("Camera1").transform.parent = player1_viewable_object.transform;
+            // else if (o == Orientation.SW)
+            //     GameObject.Find("Camera2").transform.parent = player2_viewable_object.transform;
+            // else
+            // {
+            //     print("Not supported view");
+            // }
 
 
             // attach tileMap to viewController

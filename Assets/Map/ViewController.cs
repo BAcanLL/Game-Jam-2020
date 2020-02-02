@@ -21,10 +21,14 @@ public class ViewController : MonoBehaviour {
         switch(orientation)
         {
             case Orientation.NE:
+                new_pos.x = pos.x + (tiles ? 0 : -1);
+                new_pos.y = pos.y + (tiles ? 0 : -1);
                 break;
             case Orientation.SW:
-                new_pos.x = -pos.x - 1 + (tiles ? 0 : 2);
-                new_pos.y = -pos.y - 1 + (tiles ? 0 : 2);
+                // new_pos.x = -pos.x - 1 + (tiles ? 0 : 2);
+                // new_pos.y = -pos.y - 1 + (tiles ? 0 : 2);
+                new_pos.x = -pos.x - 1  + (tiles ? 0 : 1);
+                new_pos.y = -pos.y - 1 + (tiles ? 0 : 1);
                 break;
             default: Debug.Log("Invalid orientation"); break;
         }
@@ -32,7 +36,7 @@ public class ViewController : MonoBehaviour {
         return new_pos;
     }
 
-    public Vector3Int createBlockViewable(Block block, Vector3Int pos){ //block type, position
+    public GameObject createBlockViewable(Block block, Vector3Int pos){ //block type, position
         Vector3Int new_pos = Vector3Int.RoundToInt(orientPos(orientation, pos, true));
 
         // Vector3Int offset = new Vector3Int();
@@ -47,10 +51,20 @@ public class ViewController : MonoBehaviour {
 
         // }
 
-        tilemap.SetTile(new_pos, block.tile_views[(int) orientation]);
+        GameObject tileViewable = new GameObject("Tile");
+        tileViewable.transform.parent = tilemap.transform;
+
+        tileViewable.AddComponent<SpriteRenderer>();
+        tileViewable.GetComponent<SpriteRenderer>().sprite = block.tile_views[(int) orientation].sprite;
+        Vector3 screen_coords = tilemap.CellToLocalInterpolated(new_pos);
+        screen_coords.z = ((float) (new_pos.x + new_pos.y))/100f;
+        //tileViewable.transform.position = screen_coords;
+        tileViewable.transform.localPosition = screen_coords;
+
+        //tilemap.SetTile(new_pos, block.tile_views[(int) orientation]);
 
         // // tile coordinates
-        return pos;
+        return tileViewable;
     }
 
     public void updateBlockViewable(Vector3Int blockViewable)
@@ -61,11 +75,12 @@ public class ViewController : MonoBehaviour {
 
     public void updatePlayer1(Vector3 world_position, Vector3 velocity)
     {
+        var new_pos = orientPos(orientation, world_position);
+        Vector3 screen_coords = transform.TransformPoint(tilemap.CellToLocalInterpolated(new_pos));
+        screen_coords.z = ((float)(new_pos.x + new_pos.y)) / 100f - 0.008f;
+        player1_viewable.transform.position = screen_coords;
 
-        player1_viewable.transform.position = 
-            transform.TransformPoint( tilemap.CellToLocalInterpolated(orientPos(orientation, world_position)) );
         // player1_viewable.transform.position += transform.position;
-
 
         // print(orientation.ToString() + ' ' + world_position.ToString() + ' ' + player1_viewable.transform.position.ToString());
 
@@ -98,10 +113,10 @@ public class ViewController : MonoBehaviour {
 
     public void updatePlayer2(Vector3 world_position, Vector3 velocity)
     {
-        player2_viewable.transform.position = tilemap.CellToLocalInterpolated(
-            orientPos(orientation, world_position)
-        );
-        player2_viewable.transform.position += transform.position;       
+        var new_pos = orientPos(orientation, world_position);
+        Vector3 screen_coords = transform.TransformPoint(tilemap.CellToLocalInterpolated(new_pos));
+        screen_coords.z = ((float)(new_pos.x + new_pos.y)) / 100f - 0.008f;
+        player1_viewable.transform.position = screen_coords;     
 
         Animator anim = player2_viewable.GetComponent<Animator>();
 
