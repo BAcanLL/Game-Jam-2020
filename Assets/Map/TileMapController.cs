@@ -4,16 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-enum TileType
-{
-    GRASS, BRICK
-}
 
-public class TileMapController : MonoBehaviour
+public class BlockController : MonoBehaviour
 {
     List<Block> blocks;
 
-    Block createTile(TileType type)
+    Block createBlock(string prefab_name)
     {
         // instantiate prefab block at position
         // prefab has components except sprite

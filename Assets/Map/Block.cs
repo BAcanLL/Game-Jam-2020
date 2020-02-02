@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// enum Orientation
-// {
-//     NE, SE, SW, NW
-// }
-
-public enum BlockType {
-    GRASS, WALL
-}
-
 public class Block: MonoBehaviour
 {
+    public List<Tile> tile_views;
 
-    List<ViewController> views;
+    Orientation orientation;
     List<Vector3Int> block_viewables;
+    
 
-    void initialize(Vector3 pos, BlockType type)
+    public void initialize(Vector3 pos, Orientation orientation)
     {
         
     }
@@ -26,8 +19,8 @@ public class Block: MonoBehaviour
 
     void start(){
         foreach (ViewController v in views){
-            // block_viewables.Add(v.createBlockViewable())
-        }
+        //     // block_viewables.Add(v.createBlockViewable())
+        // }
 
     }
 

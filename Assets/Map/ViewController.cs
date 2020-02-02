@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-enum Orientation {
-      NE, SE, SW, NW
-}
-
 public class ViewController : MonoBehaviour {
     // Start is called before the first frame update
 
@@ -17,7 +13,7 @@ public class ViewController : MonoBehaviour {
     public Animation player1Anim;
     public Animation player2Anim;
 
-    public Vector3Int createBlockViewable(BlockType b, Vector3 pos){ //block type, position
+    public Vector3Int createBlockViewable(Tile t, Vector3 pos){ //block type, position
 
         // depending on orientation
         // choose sprite and modify tilemap
