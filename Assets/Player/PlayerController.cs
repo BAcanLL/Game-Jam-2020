@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
         collider.direction = 2;
         collider.radius = 0.25f;
         rbody.useGravity = true;
-        rbody.position = new Vector3(0,0,0);
+        rbody.position = new Vector3(-2,0,2); // Start on wall // TODO TEMPORARY
         rbody.freezeRotation = true;
 
         // TODO Have external task assign keymap?

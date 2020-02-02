@@ -46,3 +46,4 @@ MonoBehaviour:
   tile_views:
   - {fileID: 11400000, guid: 29d9c54f14f624afc876c2b109d3a46b, type: 2}
   - {fileID: 11400000, guid: 29d9c54f14f624afc876c2b109d3a46b, type: 2}
+  wall: 1
