@@ -21,6 +21,7 @@ public class Healthbar : MonoBehaviour
 
         // Create a healthbar object
         healthbarObject = Instantiate(Resources.Load<GameObject>("Healthbar"), gameObject.transform);
+        healthbarObject.layer = LayerMask.NameToLayer("UI");
         healthbarGreenHealth = healthbarObject.transform.GetChild(0).GetChild(0).gameObject;
 
         // Move the healthbar to the correct height

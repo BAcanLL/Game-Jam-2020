@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory
 {
-    public const int MAX_SIZE = 10;
+    public const int MAX_SIZE = 5;
 
     private class Collection
     {

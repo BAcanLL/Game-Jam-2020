@@ -21,20 +21,26 @@ public class InventoryManager : MonoBehaviour
             itemCounts = new List<Text>();
             inventory = inventoryMgr.inventory;
 
-            GameObject o = new GameObject("Inventory UI", typeof(RectTransform));
-            o.transform.SetParent(anchor.transform);
-            o.transform.Translate(new Vector2(64, 96));
+            RectTransform o = new GameObject("Inventory UI").AddComponent<RectTransform>();
+            o.gameObject.layer = anchor.layer;
+            o.SetParent(anchor.GetComponent<RectTransform>());
+            o.localScale = Vector3.one;
+            o.localPosition = Vector3.zero;
 
             float spacing = 128;
             for (int i = 0; i < Inventory.MAX_SIZE; i++)
             {
                 Image image = new GameObject().AddComponent<Image>();
-                image.rectTransform.SetParent(o.transform);
-                image.transform.localPosition = new Vector3(i * spacing, 5.0f, 0.0f);
+                image.gameObject.layer = o.gameObject.layer;
+                image.rectTransform.SetParent(o);
+                image.rectTransform.localScale = Vector3.one;
+                image.rectTransform.localPosition = new Vector3((i - (Inventory.MAX_SIZE / 2)) * spacing, 0f, 0.0f);
                 inventoryIcons.Add(image);
 
                 Text count = new GameObject().AddComponent<Text>();
-                count.rectTransform.SetParent(image.transform);
+                count.gameObject.layer = o.gameObject.layer;
+                count.rectTransform.SetParent(image.rectTransform);
+                count.rectTransform.localScale = Vector3.one;
                 count.rectTransform.localPosition = Vector3.zero;
                 count.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
                 itemCounts.Add(count);

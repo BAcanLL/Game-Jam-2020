@@ -61,6 +61,7 @@ public class BulletSpawner : MonoBehaviour
     private void FireBullet()
     {
         GameObject g = Instantiate(bullet);
+        g.layer = gameObject.layer;
         Bullet b = g.GetComponent<Bullet>();
         b.transform.position = transform.position;
         b.transform.rotation = transform.rotation;
