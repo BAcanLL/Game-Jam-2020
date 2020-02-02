@@ -37,12 +37,22 @@ public class ViewManager : MonoBehaviour
             // attach playerViewables to viewController
             GameObject player1_viewable_object = Instantiate(player1_viewable);
             player1_viewable_object.transform.parent = new_view.transform;
-            print(player1_viewable_object.transform.position);
             view_controllers[view_controllers.Count - 1].player1_viewable = player1_viewable_object;
 
             GameObject player2_viewable_object = Instantiate(player2_viewable);
             player2_viewable_object.transform.parent = new_view.transform;
             view_controllers[view_controllers.Count - 1].player2_viewable = player2_viewable_object;
+
+            // attach cameras
+            if (o == Orientation.NE)
+                GameObject.Find("Camera1").transform.parent = player1_viewable_object.transform;
+            else if (o == Orientation.SW)
+                GameObject.Find("Camera2").transform.parent = player2_viewable_object.transform;
+            else
+            {
+                print("Not supported view");
+            }
+
 
             // attach tileMap to viewController
             view_controllers[view_controllers.Count - 1].tilemap = tilemap;
@@ -79,14 +89,13 @@ public class ViewManager : MonoBehaviour
             if (t != null){
 
                 // parse orientation and block from tile sprite
-                string [] tilename = ParseTileForName(t).Split('_');
-                Orientation o = (Orientation)int.Parse(tilename[1]);
-                string block_prefab_name = tilename[0];
-                
+                string block_prefab_name = ParseTileForName(t);
+                print(block_prefab_name);
+
                 // create logical block prefab
                 GameObject block_prefab = Instantiate(Resources.Load<GameObject>(block_prefab_name));
                 Block block = block_prefab.GetComponent<Block>();
-                block.initialize(pos, o);
+                block.initialize(pos);
                 blocks.Add(block);
 
             }

@@ -128,7 +128,6 @@ public class PlayerController : MonoBehaviour
                 foreach (ViewController view in view_manager.GetViewControllers())
                 {
                     view.updatePlayer1(rbody.position, rbody.velocity);
-                    print(view.orientation.ToString());
                 }
             }
 

@@ -66,9 +66,6 @@ public class ViewController : MonoBehaviour {
         );
         player1_viewable.transform.position += transform.position;
 
-        // print(orientation.ToString() + ' ' + world_position.ToString() + ' ' + player1_viewable.transform.position.ToString());
-
-
 
         Animator anim = player1_viewable.GetComponent<Animator>();
 

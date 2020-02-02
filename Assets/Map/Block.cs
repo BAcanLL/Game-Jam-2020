@@ -6,14 +6,12 @@ using UnityEngine.Tilemaps;
 public class Block: MonoBehaviour
 {
     public List<Tile> tile_views;
-
-    Orientation block_orientation;
     List<Vector3Int> block_viewables;
     
     
     BoxCollider collider;
 
-    public void initialize(Vector3Int pos, Orientation orientation)
+    public void initialize(Vector3Int pos)
     {
 
         collider =  gameObject.AddComponent <BoxCollider>();
@@ -35,16 +33,12 @@ public class Block: MonoBehaviour
 
     void update(){
         
-        // for (int i = 0; i<)
-
     }
-
-
 
 
     // RigidBody collider;
 
-    void setTileView(Tile viewable_tile, Orientation o)
+    void setTileView(Tile viewable_tile)
     {
         
     }

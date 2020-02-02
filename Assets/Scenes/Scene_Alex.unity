@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 196761033}
   - component: {fileID: 196761032}
   m_Layer: 0
-  m_Name: Camera 2
+  m_Name: Camera2
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196761030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view_manager: {fileID: 1357058036}
-  speed: 5
+  speed: 3
   player: 1
 --- !u!1 &764309446
 GameObject:
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 764309448}
   - component: {fileID: 764309447}
   m_Layer: 0
-  m_Name: Camera 1
+  m_Name: Camera1
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43db45cf7dc7841288bc5e5df41931a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialization_view: {fileID: 1571334919717233573, guid: 9be09b1577b134acc860f4b35a5db009,
+  initialization_view: {fileID: 8304285507077495037, guid: f8caef9125be84b369c89916a29684ce,
     type: 3}
   player1_viewable: {fileID: 6579082258591206386, guid: 9f76a1fa02f844a6db2dc202920db187,
     type: 3}
