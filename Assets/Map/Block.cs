@@ -6,6 +6,8 @@ using UnityEngine.Tilemaps;
 public class Block: MonoBehaviour
 {
     public List<Tile> tile_views;
+    public bool wall = false;
+
     List<Vector3Int> block_viewables;
     
     
@@ -18,7 +20,9 @@ public class Block: MonoBehaviour
         collider.center = new Vector3(0,0,0);
         collider.size = new Vector3(1,1,1);
 
-        transform.position = pos - new Vector3(-1,-1,1);
+        pos.z = -pos.z;
+
+        transform.position = pos + new Vector3(1,1,-1 + (wall ? 1 : 0));
 
         print(pos.ToString());
 
