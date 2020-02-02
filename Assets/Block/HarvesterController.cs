@@ -50,7 +50,6 @@ public class HarvesterController : MonoBehaviour, IInteractable
         {
             int itemCount = inventory.GetItemCount();
             inventory.RemoveAllItems();
-            user.GetComponent<InventoryManager>().AddItems(inventory.inventoryItems[0].GetComponent<Item>(), itemCount);
 
             return true;
         }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Inventory
 {
+    public const int MAX_SIZE = 10;
+
     private class Collection
     {
         public int count;
@@ -70,8 +72,8 @@ public class Inventory
                 return true;
             }
         }
-        
-        CreateCollection(item)
+
+        CreateCollection(item);
 
         return false;
     }

@@ -66,11 +66,6 @@ public class Resourceable : MonoBehaviour, IInteractable
             return false;
         }
 
-        if (!Array.Exists(user.GetComponent<InventoryManager>().inventoryItems, item => item == resourceItem))
-        {
-            user.GetComponent<InventoryManager>().
-        }
-
         user.GetComponent<InventoryManager>().AddItems(resource, 1);
 
         if (healthbar && healthbar.takeDamage(resourcingDamage))
