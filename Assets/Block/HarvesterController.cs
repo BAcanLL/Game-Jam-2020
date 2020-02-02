@@ -44,12 +44,15 @@ public class HarvesterController : MonoBehaviour, IInteractable
 
     public bool interact(GameObject user)
     {
+        // Debug.Log("Interact");
+
         if (GetComponent<Repairable>() 
             && GetComponent<Repairable>().state == Repairable.State.WORKING 
             && user.GetComponent<InventoryManager>())
         {
             int itemCount = inventory.GetItemCount();
-            inventory.RemoveAllItems();
+            Item item = inventory.RemoveAllItems();
+            user.GetComponent<InventoryManager>().AddItems(item, itemCount);
 
             return true;
         }
@@ -61,14 +64,9 @@ public class HarvesterController : MonoBehaviour, IInteractable
     {
         if (GetComponent<InteractiveCollider>())
         {
-            Debug.Log("Harvest");
+            //Debug.Log("Harvest");
 
-            foreach (IInteractable interactable in GetComponent<InteractiveCollider>().currentInteractables)
-            {
-                interactable.interact(gameObject);
-                Debug.Log(gameObject);
-                Debug.Log(interactable);
-            }
+            GetComponent<InteractiveCollider>().interactAll();
 
         }
     }

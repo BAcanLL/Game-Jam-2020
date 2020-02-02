@@ -27,7 +27,7 @@ public class Inventory
         collections.Add(c);
     }
 
-    public void RemoveItems(int index, int num)
+    public Item RemoveItems(int index, int num)
     {
         if (num > 0 && index >= 0 
             && index < collections.Count 
@@ -41,7 +41,11 @@ public class Inventory
             Collection c = collections[index];
             c.count -= num;
             collections[index] = c;
+
+            return collections[index].item;
         }
+
+        return null;
     }
 
     public Item GetItem(int index)
@@ -64,16 +68,18 @@ public class Inventory
 
     public bool AddItems(Item item, int num)
     {
-        foreach (Collection c in collections)
         {
-            if (c.item.itemID == item.itemID)
+            foreach (Collection c in collections)
             {
-                c.count += num;
-                return true;
+                if (c.item.itemID == item.itemID)
+                {
+                    c.count += num;
+                    return true;
+                }
             }
-        }
 
-        CreateCollection(item);
+            CreateCollection(item);
+        }
 
         return false;
     }

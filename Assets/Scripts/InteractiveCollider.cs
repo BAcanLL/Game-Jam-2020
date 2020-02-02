@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class InteractiveCollider : MonoBehaviour
 {
     public List<IInteractable> currentInteractables = new List<IInteractable>();
@@ -16,27 +17,50 @@ public class InteractiveCollider : MonoBehaviour
         //Debug.Log(currentInteractables.Count);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<IInteractable>() != null) 
+        foreach (IInteractable interactable in collision.gameObject.GetComponents<IInteractable>())
         {
-            //Debug.Log("added " + collision.gameObject);
-            currentInteractables.Add(collision.gameObject.GetComponent<IInteractable>());
+            currentInteractables.Add(interactable);
+        }
+
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        foreach (IInteractable interactable in collision.gameObject.GetComponents<IInteractable>())
+        {
+            currentInteractables.Remove(interactable);
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    public bool interactAll()
     {
-        //Debug.Log("removed " + collision.gameObject);
-        currentInteractables.Remove(collision.gameObject.GetComponent<IInteractable>());
+        bool status = true;
+
+        foreach (IInteractable interactable in currentInteractables)
+        {
+            if (!interactable.interact(gameObject)) status = false;
+        }
+
+        return status;
     }
 
-/*    private void OnCollisionStay(Collision collision)
+    public bool interactNext()
     {
-        if (!currentInteractables.Contains(collision.gameObject.GetComponent<IInteractable>()))
+        foreach (IInteractable interactable in currentInteractables)
         {
-            Debug.Log("touching");
-            currentInteractables.Add(collision.gameObject.GetComponent<IInteractable>());
+            if (interactable.interact(gameObject))
+            {
+                Debug.Log(gameObject + " interacted with " + interactable);
+
+                currentInteractables.Remove(interactable);
+                currentInteractables.Insert(currentInteractables.Count, interactable);
+
+                return true;
+            }
         }
-    }*/
+
+        return false;
+    }
 }

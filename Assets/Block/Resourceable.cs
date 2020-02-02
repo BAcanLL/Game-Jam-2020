@@ -42,7 +42,7 @@ public class Resourceable : MonoBehaviour, IInteractable
         {
             if (healthbar && healthbar.heal(healthTick))
             {
-                Debug.Log("Replenished");
+                // Debug.Log("Replenished");
 
                 state = State.AVAILABLE;
                 healthbar.disabled = false;

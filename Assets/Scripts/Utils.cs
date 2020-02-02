@@ -22,7 +22,7 @@ public class Timer
 
     public void Reset()
     {
-        Debug.Log("Reset");
+        //Debug.Log("Reset");
 
         time = 0;
         Done = false;
