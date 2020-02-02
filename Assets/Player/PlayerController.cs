@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 5f;
     public Player player = Player.PLAYER_1;
-    Rigidbody2D rbody;
+    Rigidbody rbody;
     BulletSpawner bulletSpawner;
 
     KeyMap current_keymap;
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rbody = GetComponent<Rigidbody2D>();
+        rbody = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         bulletSpawner = GetComponent<BulletSpawner>();
 
@@ -138,12 +138,12 @@ public class PlayerController : MonoBehaviour
         rbody.velocity = movement;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
         currentInteractables.Add(collision.gameObject.GetComponent<IInteractable>());
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit(Collision collision)
     {
         currentInteractables.Remove(collision.gameObject.GetComponent<IInteractable>());
     }
