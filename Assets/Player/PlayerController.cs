@@ -120,13 +120,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         inputMap.UpdateInputStates();
-
+        
         if(view_manager)
         {
             if(player == Player.PLAYER_1)
             {
-                foreach(ViewController view in view_manager.GetViewControllers()) 
+                foreach (ViewController view in view_manager.GetViewControllers())
+                {
                     view.updatePlayer1(rbody.position, rbody.velocity);
+                    print(view.orientation.ToString());
+                }
             }
 
             if(player == Player.PLAYER_2)
@@ -158,13 +161,16 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 currentPos = rbody.position;
+        Vector3 currentPos = rbody.position;
 
         // float horizontalInput = Input.GetAxisRaw("Horizontal");
         // float verticalInput = Input.GetAxisRaw("Vertical");
 
         Vector2 input_vector = new Vector2(inputMap.GetAxis(Inputs.AXIS_X), inputMap.GetAxis(Inputs.AXIS_Y));
 
+        var world_input_vector = input_vector.y * (new Vector3(1, 1, 0))
+                                 + input_vector.x * (new Vector3(1, -1, 0));
+        world_input_vector.Normalize();
 
         //if (Input.GetKey(current_keymap.left)) input_vector += Vector2.left;
         //if (Input.GetKey(current_keymap.right)) input_vector += Vector2.right;
@@ -174,13 +180,10 @@ public class PlayerController : MonoBehaviour
         // Debug.Log(KeyCode.DownArrow.GetType());
 
         // Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
-        input_vector = Vector2.ClampMagnitude(input_vector, 1);
-
-        Vector2 movement = input_vector * speed;
         // Vector2 newPos = currentPos + movement * Time.fixedDeltaTime;
         // renderer.SetDirection(movement);
 
-        rbody.velocity = movement;
+        rbody.velocity = world_input_vector * speed;
     }
 
     private void OnCollisionEnter(Collision collision)

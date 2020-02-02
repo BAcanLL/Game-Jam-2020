@@ -15,26 +15,41 @@ public class ViewController : MonoBehaviour {
 
     public Orientation orientation;
 
-    public Vector3Int createBlockViewable(Block block, Vector3Int pos){ //block type, position
-        Vector3Int new_pos = new Vector3Int();
-
+    public Vector3 orientPos(Orientation o, Vector3 pos, bool tiles = false){
+        Vector3 new_pos = pos;
         switch(orientation)
         {
-            case Orientation.NE: 
-                new_pos = pos;
+            case Orientation.NE:
                 break;
             case Orientation.SW:
-                new_pos.x = -pos.x;
-                new_pos.y = -pos.y;
+                new_pos.x = -pos.x - 1 + (tiles ? 0 : 2);
+                new_pos.y = -pos.y - 1 + (tiles ? 0 : 2);
                 break;
             default: Debug.Log("Invalid orientation"); break;
         }
 
+        return new_pos;
+    }
+
+    public Vector3Int createBlockViewable(Block block, Vector3Int pos){ //block type, position
+        Vector3Int new_pos = Vector3Int.RoundToInt(orientPos(orientation, pos, true));
+
+        // Vector3Int offset = new Vector3Int();
+        // switch (orientation){
+        //     case Orientation.NE:
+        //         break;
+        //     case Orientation.SW:
+        //         offset.x = -1;
+        //         offset.y = -1;
+        //         break;
+        //     default: Debug.Log("Invalid orientation"); break;
+
+        // }
 
         tilemap.SetTile(new_pos, block.tile_views[(int) orientation]);
 
         // // tile coordinates
-        return new Vector3Int(0, 0, 0);
+        return pos;
     }
 
     public void updateBlockViewable(Vector3Int blockViewable)
@@ -43,24 +58,31 @@ public class ViewController : MonoBehaviour {
 
     }
 
-    public void updatePlayer1(Vector3 position, Vector3 velocity)
+    public void updatePlayer1(Vector3 world_position, Vector3 velocity)
     {
-        player1_viewable.transform.position = tilemap.CellToLocalInterpolated(position);
-            
 
-        Animation anim = player1_viewable.GetComponent<Animation>();
+        player1_viewable.transform.position = tilemap.CellToLocalInterpolated(
+            orientPos(orientation, world_position)
+        );
+        player1_viewable.transform.position += transform.position;
 
-        if (velocity.y > 0)
+        // print(orientation.ToString() + ' ' + world_position.ToString() + ' ' + player1_viewable.transform.position.ToString());
+
+
+
+        Animator anim = player1_viewable.GetComponent<Animator>();
+
+        if (orientation == Orientation.NE)
         {
-            anim.Play("Walking_back");
+            if (velocity.y > 0) anim.Play("Walking_back");
+            else if (velocity.y < 0 || velocity.x != 0) anim.Play("Walking_front");
+            else anim.Play("Idle");
         }
-        else if (velocity.y < 0 || velocity.x != 0)
+        else if (orientation == Orientation.SW)
         {
-            anim.Play("Walking_front");
-        }
-        else
-        {
-            anim.Play("Idle");
+            if (velocity.y > 0) anim.Play("Walking_front");
+            else if (velocity.y < 0 || velocity.x != 0) anim.Play("Walking_back");
+            else anim.Play("Idle");
         }
 
         if (velocity.x > 0)
@@ -73,12 +95,14 @@ public class ViewController : MonoBehaviour {
         }
     }
 
-    public void updatePlayer2(Vector3 position, Vector3 velocity)
+    public void updatePlayer2(Vector3 world_position, Vector3 velocity)
     {
-        player2_viewable.transform.position = tilemap.CellToLocalInterpolated(position);
-            
+        player2_viewable.transform.position = tilemap.CellToLocalInterpolated(
+            orientPos(orientation, world_position)
+        );
+        player2_viewable.transform.position += transform.position;       
 
-        Animation anim = player2_viewable.GetComponent<Animation>();
+        Animator anim = player2_viewable.GetComponent<Animator>();
 
         if (velocity.y > 0)
         {
