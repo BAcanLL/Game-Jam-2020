@@ -7,21 +7,30 @@ public class Block: MonoBehaviour
 {
     public List<Tile> tile_views;
 
-    Orientation orientation;
+    Orientation block_orientation;
     List<Vector3Int> block_viewables;
     
+    
+    BoxCollider collider;
 
-    public void initialize(Vector3 pos, Orientation orientation)
+    public void initialize(Vector3Int pos, Orientation orientation)
     {
-        
+
+        collider =  gameObject.AddComponent <BoxCollider>();
+        collider.center = new Vector3(0,0,0);
+        collider.size = new Vector3(1,1,1);
+
+        transform.position = pos;
+
+
+        foreach (ViewController view in FindObjectOfType<ViewManager>().GetViewControllers())
+        {
+            view.createBlockViewable(this, pos); // Vector3Int.RoundToInt(pos)
+        }
     }
 
-
     void start(){
-        foreach (ViewController v in views){
-        //     // block_viewables.Add(v.createBlockViewable())
-        // }
-
+        
     }
 
     void update(){

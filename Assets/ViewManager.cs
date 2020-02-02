@@ -9,18 +9,29 @@ public class ViewManager : MonoBehaviour
 
     public List<Block> blocks;
 
-    Tilemap tilemap;
+    List<ViewController> view_controllers = new List<ViewController>();
 
     void Start()
     {
-        tilemap = initialization_view.GetComponentInChildren<Tilemap>();
-
-        ParseTilemapForBlocks(tilemap);
+        Orientation[] used_orientations = {Orientation.SW, Orientation.NE};
 
 
+        foreach( var o in used_orientations)
+        {
+            // clone initialization view
+            GameObject new_view = Instantiate( initialization_view );
+            new_view.transform.position += new Vector3(0, (int) o * 50, 0); // Place each view in unique location in world
+
+            view_controllers.Add(new_view.GetComponent<ViewController>());
+            view_controllers[view_controllers.Count - 1].orientation = o;
+            new_view.GetComponentInChildren<Tilemap>().ClearAllTiles();
+        }
+        
+        Tilemap tilemap = initialization_view.GetComponentInChildren<Tilemap>();
+        blocks =  ParseBlocksFromTilemap(tilemap);
 
 
-
+        Destroy(initialization_view);
 
         // print(tilemap.cellBounds);
 
@@ -40,8 +51,8 @@ public class ViewManager : MonoBehaviour
 
     }
 
-    public List<GameObject> GetViews(){
-        return null;
+    public List<ViewController> GetViewControllers(){
+        return view_controllers;
     }
 
 
@@ -51,7 +62,9 @@ public class ViewManager : MonoBehaviour
         
     }
 
-    void ParseTilemapForBlocks(Tilemap tilemap){
+    List<Block> ParseBlocksFromTilemap(Tilemap tilemap){
+
+        List<Block> blocks = new List<Block>();
 
         foreach (var pos in tilemap.cellBounds.allPositionsWithin) {
             
@@ -63,13 +76,20 @@ public class ViewManager : MonoBehaviour
                 Orientation o = (Orientation)int.Parse(tilename[1]);
                 string block_prefab_name = tilename[0];
 
+                print(o);
+                print(block_prefab_name);
+
                 // create logical block prefab
                 GameObject block_prefab = Resources.Load<GameObject>(block_prefab_name);
-                block_prefab.GetComponent<Block>().initialize(pos, o);
+                Block block = block_prefab.GetComponent<Block>();
+                block.initialize(pos, o);
+                blocks.Add(block);
 
             }
 
         }
+
+        return blocks;
 
     }
 

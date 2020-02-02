@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Healthbar : MonoBehaviour
 {
-    private static Color RED_HEALTH_COLOR = new Color(231, 117, 117);
-    private static Color GREEN_HEALTH_COLOR = new Color(98, 204, 86);
-    private static Color GREY_HEALTH_COLOR = new Color(145, 145, 145);
+    private static Color RED_HEALTH_COLOR = new Color(231 / 255f, 117 / 255f, 117 / 255f);
+    private static Color GREEN_HEALTH_COLOR = new Color(98 / 255f, 204 / 255f, 86 / 255f);
+    private static Color GREY_HEALTH_COLOR = new Color(200 / 255f, 200 / 255f, 200 / 255f);
 
     public float maxHealth = 100;
     public float Health { get; private set; }
+    public bool disabled = false;
 
     private GameObject healthbarObject;
     private GameObject healthbarGreenHealth;
@@ -29,6 +30,14 @@ public class Healthbar : MonoBehaviour
     void Update()
     {
         healthbarGreenHealth.transform.localScale = new Vector3(Health/maxHealth, 1, 1);
+
+        if (disabled)
+        {
+            healthbarGreenHealth.GetComponent<SpriteRenderer>().color = GREY_HEALTH_COLOR;
+        } else
+        {
+            healthbarGreenHealth.GetComponent<SpriteRenderer>().color = GREEN_HEALTH_COLOR;
+        }
     }
 
     public bool takeDamage(float value) // Returns TRUE if damages causes health to reach zero
@@ -45,18 +54,21 @@ public class Healthbar : MonoBehaviour
         return false;
     }
 
-    public void heal(float value)
+    public bool heal(float value) // Returns TRUE if healing causes health to be full
     {
         Health += value;
 
         if (Health >= maxHealth)
         {
             Health = maxHealth;
+            return true;
         }
+
+        return false;
     }
 
-    public void fullHeal()
+    public bool fullHeal()
     {
-        heal(maxHealth);
+        return heal(maxHealth);
     }
 }
