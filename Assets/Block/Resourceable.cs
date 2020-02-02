@@ -17,23 +17,36 @@ public class Resourceable : MonoBehaviour, IInteractable
     public int cooldown = 3;
 
     private Item resource;
+    private Healthbar healthbar = null;
     private float resourcingDamage = 0; // Damage taken from harvesting a resource
+    private float healingTick = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         resource = resourceItemPrefab.GetComponent<Item>();
+        healthbar = GetComponent<Healthbar>();
 
-        if (GetComponent<Healthbar>() != null)
+        if (healthbar)
         {
-            resourcingDamage = GetComponent<Healthbar>().maxHealth / quantity;
+            resourcingDamage = healthbar.maxHealth / quantity;
+            healingTick = healthbar.maxHealth / cooldown * Time.deltaTime;
+
+            Debug.Log(healingTick);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (state == State.DEPLETED)
+        {
+            if (healthbar && healthbar.heal(healingTick))
+            {
+                state = State.AVAILABLE;
+                healthbar.disabled = false;
+            }
+        }
     }
 
     public bool interact(GameObject user)
@@ -54,13 +67,11 @@ public class Resourceable : MonoBehaviour, IInteractable
 
         user.GetComponent<InventoryManager>().AddItem(resource);
 
-        if (GetComponent<Healthbar>() != null)
+        if (healthbar && healthbar.takeDamage(resourcingDamage))
         {
-            if (GetComponent<Healthbar>().takeDamage(resourcingDamage))
-            {
-                state = State.DEPLETED;
-                StartCoroutine(ReplenishAfterDelay(cooldown));
-            }
+            state = State.DEPLETED;
+            healthbar.disabled = true;
+            //StartCoroutine(ReplenishAfterDelay(cooldown));
         }
 
         return true;
@@ -68,11 +79,11 @@ public class Resourceable : MonoBehaviour, IInteractable
 
     IEnumerator ReplenishAfterDelay(float seconds)
     {
-        if (GetComponent<Healthbar>() != null)
+        if (healthbar)
         {
             yield return new WaitForSeconds(seconds);
 
-            GetComponent<Healthbar>().fullHeal();
+            healthbar.fullHeal();
         }
     }
 }

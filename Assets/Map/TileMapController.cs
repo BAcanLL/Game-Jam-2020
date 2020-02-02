@@ -9,18 +9,14 @@ enum TileType
     GRASS, BRICK
 }
 
-public class TileManager : MonoBehaviour
+public class TileMapController : MonoBehaviour
 {
-    List<Block> tiles;
-    public Tilemap initialization_map;
-
-    Tilemap NE_map;
-    Tilemap SE_map;
-    Tilemap SW_map;
-    Tilemap NW_map;
+    List<Block> blocks;
 
     Block createTile(TileType type)
     {
+        // instantiate prefab block at position
+        // prefab has components except sprite
         return null;
         // switch{
             
@@ -28,11 +24,14 @@ public class TileManager : MonoBehaviour
         // }
     }
 
+    //Tilemap 
+
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // void Start()
+    // {
+    //     NE_map = initialization_map;
+    //     SW_map = 
+    // }
 
     // Update is called once per frame
     void Update()
