@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
     public Player player = Player.PLAYER_1;
     Rigidbody rbody;
     BulletSpawner bulletSpawner;
+    CapsuleCollider collider;
 
     InputMap inputMap;
 
@@ -109,6 +110,15 @@ public class PlayerController : MonoBehaviour
         rbody = GetComponent<Rigidbody>();
         // anim = GetComponent<Animator>();
         bulletSpawner = GetComponent<BulletSpawner>();
+
+        collider = gameObject.AddComponent<CapsuleCollider>();
+        // collider.size = new Vector3(0.5f,0.5f,1);
+        collider.height = 0.5f;
+        collider.direction = 2;
+        collider.radius = 0.25f;
+        rbody.useGravity = true;
+        rbody.position = new Vector3(0,0,0);
+        rbody.freezeRotation = true;
 
         // TODO Have external task assign keymap?
 
@@ -160,8 +170,6 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 currentPos = rbody.position;
-
         // float horizontalInput = Input.GetAxisRaw("Horizontal");
         // float verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -182,7 +190,8 @@ public class PlayerController : MonoBehaviour
         // Vector2 newPos = currentPos + movement * Time.fixedDeltaTime;
         // renderer.SetDirection(movement);
 
-        rbody.velocity = world_input_vector * speed;
+        world_input_vector = speed*world_input_vector;
+        rbody.velocity = new Vector3(world_input_vector.x, world_input_vector.y ,rbody.velocity.z);
     }
 
     private void OnCollisionEnter(Collision collision)

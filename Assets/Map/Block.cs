@@ -14,11 +14,13 @@ public class Block: MonoBehaviour
     public void initialize(Vector3Int pos)
     {
 
-        collider =  gameObject.AddComponent <BoxCollider>();
+        collider = gameObject.AddComponent<BoxCollider>();
         collider.center = new Vector3(0,0,0);
         collider.size = new Vector3(1,1,1);
 
-        transform.position = pos;
+        transform.position = pos - new Vector3(-1,-1,1);
+
+        print(pos.ToString());
 
 
         foreach (ViewController view in FindObjectOfType<ViewManager>().GetViewControllers())
