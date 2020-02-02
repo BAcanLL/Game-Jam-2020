@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 998357118570022633}
   - component: {fileID: 998357118570022626}
   - component: {fileID: 1677755430}
+  - component: {fileID: 1677755431}
   m_Layer: 0
   m_Name: Boulder
   m_TagString: Untagged
@@ -114,7 +115,7 @@ MonoBehaviour:
     type: 3}
   state: 0
   quantity: 5
-  cooldown: 3
+  cooldownInSeconds: 3
 --- !u!65 &1677755430
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128,3 +129,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: -0.1, z: 0}
+--- !u!54 &1677755431
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998357118570022632}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

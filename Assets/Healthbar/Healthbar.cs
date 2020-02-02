@@ -43,7 +43,7 @@ public class Healthbar : MonoBehaviour
     public bool takeDamage(float value) // Returns TRUE if damages causes health to reach zero
     {
         Health -= value;
-        Debug.Log("Remaining Health: " + Health);
+        // Debug.Log("Remaining Health: " + Health);
 
         if (Health <= 0)
         {

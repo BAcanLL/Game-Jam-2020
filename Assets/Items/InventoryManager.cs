@@ -8,8 +8,8 @@ public class InventoryManager : MonoBehaviour
     // Start is called before the first frame update
     public GameObject[] inventoryItems;
 
-    Inventory inventory;
-    int activeIndex;
+    public Inventory inventory { get; protected set; }
+    public int activeIndex { get; protected set;  }
 
     public class InventoryUI : UI
     {
@@ -81,11 +81,16 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void UseItem()
+    public int GetItemCount()
+    {
+        return inventory.GetItemCount(activeIndex);
+    }
+
+    public void RemoveItems(int n = 1)
     {
         if (inventory.GetItemCount(activeIndex) > 0)
         {
-            inventory.UseItem(activeIndex);
+            inventory.RemoveItems(activeIndex, n);
         }
         else 
         {
@@ -93,9 +98,14 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void AddItem(Item item)
+    public void RemoveAllItems()
     {
-        inventory.AddItem(item);
+        RemoveItems(inventory.GetItemCount(activeIndex));
+    }
+
+    public void AddItems(Item item, int n = 1)
+    {
+        inventory.AddItems(item, n);
     }
 
     public void ScrollActiveItem(bool right)

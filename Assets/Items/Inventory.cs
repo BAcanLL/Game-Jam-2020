@@ -25,12 +25,19 @@ public class Inventory
         collections.Add(c);
     }
 
-    public void UseItem(int index)
+    public void RemoveItems(int index, int num)
     {
-        if (index >= 0 && index < collections.Count && collections[index].count > 0)
+        if (num > 0 && index >= 0 
+            && index < collections.Count 
+            && collections[index].count > 0)
         {
+            if (num > collections[index].count)
+            {
+                num = collections[index].count;
+            }
+
             Collection c = collections[index];
-            c.count--;
+            c.count -= num;
             collections[index] = c;
         }
     }
@@ -53,16 +60,19 @@ public class Inventory
         return 0;
     }
 
-    public bool AddItem(Item item)
+    public bool AddItems(Item item, int num)
     {
         foreach (Collection c in collections)
         {
             if (c.item.itemID == item.itemID)
             {
-                c.count += 1;
+                c.count += num;
                 return true;
             }
         }
+        
+        CreateCollection(item)
+
         return false;
     }
 
